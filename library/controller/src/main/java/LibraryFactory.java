@@ -4,13 +4,8 @@ import java.util.Scanner;
 
 public class LibraryFactory {
 
-    public Library createLibrary(File file) {
-        try {
+    public Library createLibrary(File file) throws FileNotFoundException {
             Scanner scanner = new Scanner(file);
             return new Library(scanner.nextLine());
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-            return new Library("ExceptionLibrary");
-        }
     }
 }
