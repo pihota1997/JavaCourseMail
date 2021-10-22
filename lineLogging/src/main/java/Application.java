@@ -18,11 +18,10 @@ public class Application {
         this.obj2 = obj2;
     }
 
-    public void waitForInput(String tag) {
+    public void waitForInput(String type, String tag) {
         try (Scanner scanner = new Scanner(System.in)) {
             long n = 1;
             System.out.println("Specify one of the logging types: console, file, composite");
-            String type = scanner.nextLine();
             if (!(type.equals("console") || type.equals("file")||type.equals("composite"))) {
                 throw new IllegalStateException();
             }
