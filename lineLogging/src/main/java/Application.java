@@ -18,16 +18,12 @@ public class Application {
         this.obj2 = obj2;
     }
 
-    public void waitForInput() {
+    public void waitForInput(String tag) {
         try (Scanner scanner = new Scanner(System.in)) {
             long n = 1;
-            String tag = "";
             System.out.println("Specify one of the logging types: console, file, composite");
             String type = scanner.nextLine();
-            if (type.equals("file") || type.equals("composite")) {
-                System.out.println("Enter tag name");
-                tag = scanner.nextLine();
-            } else if (!(type.equals("console"))) {
+            if (!(type.equals("console") || type.equals("file")||type.equals("composite"))) {
                 throw new IllegalStateException();
             }
             System.out.println("Waiting for new lines. Key in Ctrl+D to exit.");
