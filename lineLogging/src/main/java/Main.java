@@ -5,8 +5,6 @@ import org.jetbrains.annotations.NotNull;
 public class Main {
     public static void main(@NotNull String[] args){
         final Injector injector = Guice.createInjector(new ParameterModule());
-        String type = "console";
-        String tag = "i";
-        injector.getInstance(Application.class).waitForInput(type, tag);
+        injector.getInstance(Application.class).waitForInput(args[0], args[1]);
     }
 }
