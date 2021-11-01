@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
 
-public final class FileBookFactory{
+public class FileBookFactory{
     @NotNull
     private static final Type listBooksType = new TypeToken<LinkedList<Book>>() {
     }.getType();
@@ -31,9 +31,5 @@ public final class FileBookFactory{
 
     public String getBook(int cellNumber) {
         return books().get(cellNumber).getName() + " " + books().get(cellNumber).getAuthor().getName();
-    }
-
-    public void setFileName(@NotNull String fileName) {
-        this.fileName = fileName;
     }
 }
