@@ -17,11 +17,11 @@ public class ProductDAO implements DAO<Product> {
 
 
     @Override
-    public @NotNull Product get(int id) {
+    public @NotNull Product get(String id) {
         try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT name, internal_code " +
                 "FROM products " +
                 "WHERE internal_code = ?")) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return new Product(resultSet.getString("name"),

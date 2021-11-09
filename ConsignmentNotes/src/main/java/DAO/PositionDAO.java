@@ -20,12 +20,12 @@ public class PositionDAO implements DAO<Position> {
     }
 
     @Override
-    public @NotNull Position get(int id) {
+    public @NotNull Position get(String id) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT No, price, product, quantity, consignment_note_No " +
                         "FROM positions " +
                         "WHERE No = ?")) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, Integer.parseInt(id));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return new Position(resultSet.getInt("no"),
@@ -62,12 +62,13 @@ public class PositionDAO implements DAO<Position> {
 
     @Override
     public void create(@NotNull Position entity) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO positions(price, product, quantity, consignment_note_No) " +
-                "VALUES (?, ?, ?, ?)")) {
-            preparedStatement.setDouble(1, entity.getPrice());
-            preparedStatement.setString(2, entity.getProduct());
-            preparedStatement.setInt(3, entity.getQuantity());
-            preparedStatement.setInt(4, entity.getConsignmentNoteNo());
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO positions(no, price, product, quantity, consignment_note_No) " +
+                "VALUES (?, ?, ?, ?, ?)")) {
+            preparedStatement.setInt(1, entity.getNo());
+            preparedStatement.setDouble(2, entity.getPrice());
+            preparedStatement.setString(3, entity.getProduct());
+            preparedStatement.setInt(4, entity.getQuantity());
+            preparedStatement.setInt(5, entity.getConsignmentNoteNo());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

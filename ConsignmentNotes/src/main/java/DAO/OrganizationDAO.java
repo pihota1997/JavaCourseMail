@@ -17,11 +17,11 @@ public final class OrganizationDAO implements DAO<Organization> {
     }
 
     @Override
-    public @NotNull Organization get(int id) {
+    public @NotNull Organization get(String id) {
         try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT name, TIN, current_account " +
                 "FROM organizations " +
                 "WHERE TIN = ?")) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return new Organization(resultSet.getString("name"),

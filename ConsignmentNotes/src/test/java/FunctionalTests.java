@@ -1,13 +1,13 @@
+import commons.FlywayInitializer;
 import commons.Functional;
 import commons.JDBCCredentials;
 
 import entity.Organization;
 
 import entity.Product;
-import org.flywaydb.core.Flyway;
 import org.jetbrains.annotations.NotNull;
 import org.junit.BeforeClass;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
@@ -17,22 +17,14 @@ import java.sql.SQLException;
 import java.sql.Date;
 import java.util.*;
 
-public class FunctionalTests {
+public final class FunctionalTests {
 
     private static final @NotNull JDBCCredentials CREDS = JDBCCredentials.DEFAULT;
 
     @BeforeClass
-    private static void createDataInDB() {
-        final Flyway flyway = Flyway.configure()
-                .dataSource(
-                        CREDS.url(),
-                        CREDS.getLogin(),
-                        CREDS.getPassword()
-                )
-                .locations("db")
-                .load();
-        flyway.clean();
-        flyway.migrate();
+    public static void createDataInDB() {
+        FlywayInitializer.initDB();
+        InclusionInDB.addAllToDB();
     }
 
     @Test

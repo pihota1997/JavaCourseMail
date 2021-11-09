@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DAO<T> {
 
-    @NotNull T get(int id);
+    @NotNull T get(String id);
 
     @NotNull List<T> all();
 
