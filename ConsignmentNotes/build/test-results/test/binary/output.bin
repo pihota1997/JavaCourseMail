@@ -1,0 +1,33 @@
+POrganization{name='Organization8', TIN='0008', currentAccount='0000'} 100000.0
+MOrganization{name='Organization2', TIN='0002', currentAccount='0000'} 750.0
+OOrganization{name='Organization7', TIN='0007', currentAccount='0000'} 20000.0
+OOrganization{name='Organization1', TIN='0001', currentAccount='0000'} 10000.0
+tProduct{name='Product1', internalCode='0100'} Organization{name='Organization1', TIN='0001', currentAccount='0000'}
+tProduct{name='Product2', internalCode='0200'} Organization{name='Organization1', TIN='0001', currentAccount='0000'}
+tProduct{name='Product1', internalCode='0100'} Organization{name='Organization2', TIN='0002', currentAccount='0000'}
+tProduct{name='Product2', internalCode='0200'} Organization{name='Organization2', TIN='0002', currentAccount='0000'}
+tProduct{name='Product3', internalCode='0300'} Organization{name='Organization3', TIN='0003', currentAccount='0000'}
+pProduct{name='null', internalCode='null'} Organization{name='Organization4', TIN='0004', currentAccount='0000'}
+pProduct{name='null', internalCode='null'} Organization{name='Organization5', TIN='0005', currentAccount='0000'}
+pProduct{name='null', internalCode='null'} Organization{name='Organization6', TIN='0006', currentAccount='0000'}
+pProduct{name='null', internalCode='null'} Organization{name='Organization7', TIN='0007', currentAccount='0000'}
+pProduct{name='null', internalCode='null'} Organization{name='Organization8', TIN='0008', currentAccount='0000'}
+pProduct{name='null', internalCode='null'} Organization{name='Organization9', TIN='0009', currentAccount='0000'}
+qProduct{name='null', internalCode='null'} Organization{name='Organization10', TIN='0010', currentAccount='0000'}
+uProduct{name='Product5', internalCode='0500'} Organization{name='Organization11', TIN='0011', currentAccount='0000'}
+
+4Product{name='Product1', internalCode='0100'} 150.0
+4Product{name='Product2', internalCode='0200'} 200.0
+3Product{name='Product3', internalCode='0300'} 51.0
+4Product{name='Product5', internalCode='0500'} 257.5
+
+GOrganization{name='Organization7', TIN='0007', currentAccount='0000'}
+GOrganization{name='Organization1', TIN='0001', currentAccount='0000'}
+GOrganization{name='Organization8', TIN='0008', currentAccount='0000'}
+GOrganization{name='Organization2', TIN='0002', currentAccount='0000'}
+GOrganization{name='Organization3', TIN='0003', currentAccount='0000'}
+GOrganization{name='Organization5', TIN='0005', currentAccount='0000'}
+GOrganization{name='Organization6', TIN='0006', currentAccount='0000'}
+GOrganization{name='Organization9', TIN='0009', currentAccount='0000'}
+HOrganization{name='Organization11', TIN='0011', currentAccount='0000'}
+GOrganization{name='Organization4', TIN='0004', currentAccount='0000'}
