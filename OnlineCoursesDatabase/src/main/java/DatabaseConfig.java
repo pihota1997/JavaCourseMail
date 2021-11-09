@@ -11,6 +11,7 @@ public class DatabaseConfig {
     public static void main(@NotNull String[] args) {
         final Flyway flyway = Flyway.configure().dataSource(CONNECTION + DB_NAME, USERNAME, PASSWORD)
                 .locations("db").load();
+        flyway.clean();
         flyway.migrate();
     }
 }
