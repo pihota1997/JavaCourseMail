@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><title>Welcome page</title></head>
+<body>
+<h1>Welcome to the Products database web service</h1>
+<form action="http://localhost:3466/info">
+    <button type="submit">Info</button>
+</form>
+<br>
+<form action="http://localhost:3466/db">
+    <button type="submit">Get the database contents</button>
+</form>
+<br><h4>Fill in the fields below to create a new product</h4>
+<form action="http://localhost:3466/db" method="post" name="form">
+    Product name: <input name="name" type="text" value=""><br><br>
+    Manufacturer: <input name="manufacturer" type="text" value=""><br><br>
+    Quantity: <input name="quantity" type="text" value=""><br><br>
+    <input type = "submit" name = "send" value="Add to database">
+</form>
+</body>
+</html>

@@ -1,0 +1,4 @@
+The web service provides access to the product database.
+The database view is available for registered users by clicking the "Get the database contents" button.
+Users with the manager status can add products to the database, to do this, enter the name of the product, manufacturer and quantity in the corresponding lines on the site and click the "Add to database" button. Please note that only products with a unique name can be added to the database.
+Please contact the developers to access the database.
