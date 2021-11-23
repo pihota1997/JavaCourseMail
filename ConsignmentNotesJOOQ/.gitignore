@@ -1,0 +1,9 @@
+# Project exclude paths
+/.gradle/
+/build/
+/jooq_generated/build/
+/jooq_generated/out/
+/jooq_generated/out/production/classes/
+/out/
+/out/production/classes/
+/out/test/classes/
