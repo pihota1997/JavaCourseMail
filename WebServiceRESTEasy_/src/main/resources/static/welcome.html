@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head><title>Welcome page</title></head>
+<body>
+<h2>Welcome to the Products database web service</h2>
+<form action="http://localhost:3466/info">
+    <button type="submit">Info</button>
+</form>
+<br>
+<form action="http://localhost:3466/db" method="get" name="form">
+    <button type="submit">Get the database contents</button>
+</form>
+<br><h4>Fill in the field below to find manufacturer's products</h4>
+<form action="http://localhost:3466/db/select" method="get" name="form">
+    Manufacturer: <input name="manufacturer" type="search" value=""><br><br>
+    <button type="submit">Find in database</button>
+</form>
+<br><h4>Fill in the fields below to create a new product</h4>
+<form action="http://localhost:3466/db/create" method="post" name="form">
+    Product name: <input name="name" type="search" value=""><br><br>
+    Manufacturer: <input name="manufacturer" type="search" value=""><br><br>
+    Quantity: <input name="quantity" type="search" value=""><br><br>
+    <button type="submit">Add to database</button>
+</form>
+<br><h4>Fill in the field below to delete product</h4>
+<form action="http://localhost:3466/db/delete" method="post" name="form">
+    Product name: <input name="name" type="search" value=""><br><br>
+    <button type="submit">Delete from database</button>
+</form>
+</body>
+</html>
