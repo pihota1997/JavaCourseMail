@@ -9,7 +9,7 @@ import java.sql.Connection;
 
 import static generated.Tables.PRODUCTS;
 
-public class ProductDAO {
+public final class ProductDAO {
 
     private @NotNull Connection connection;
 

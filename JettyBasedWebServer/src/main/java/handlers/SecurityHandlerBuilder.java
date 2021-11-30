@@ -12,22 +12,33 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SecurityHandlerBuilder {
+public final class SecurityHandlerBuilder {
     private static final String ROLE_MANAGER = "manager";
     private static final String ROLE_GUEST = "guest";
 
     private final ConstraintSecurityHandler security = new ConstraintSecurityHandler();
 
-    public final ConstraintSecurityHandler build(LoginService loginService) {
+    public ConstraintSecurityHandler build(LoginService loginService) {
         security.setLoginService(loginService);
 
         final List<ConstraintMapping> constraintMappings = new ArrayList<>();
-        constraintMappings.addAll(constraintPostMapping(
+
+        constraintMappings.addAll(constraintFullMapping(
                 buildConstraint(ROLE_MANAGER),
                 Collections.singletonList("/db")
         ));
 
         constraintMappings.addAll(constraintGetMapping(
+                buildConstraint(ROLE_GUEST, ROLE_MANAGER),
+                Collections.singletonList("/db")
+        ));
+
+        constraintMappings.addAll(constraintHeadMapping(
+                buildConstraint(ROLE_GUEST, ROLE_MANAGER),
+                Collections.singletonList("/db")
+        ));
+
+        constraintMappings.addAll(constraintOptionsMapping(
                 buildConstraint(ROLE_GUEST, ROLE_MANAGER),
                 Collections.singletonList("/db")
         ));
@@ -51,9 +62,9 @@ public class SecurityHandlerBuilder {
         return constraintMapping(constraint, paths, "GET");
     }
 
-    private static Collection<ConstraintMapping> constraintPostMapping(Constraint constraint,
+    private static Collection<ConstraintMapping> constraintFullMapping(Constraint constraint,
                                                                        Collection<String> paths) {
-        return constraintMapping(constraint, paths, "POST");
+        return constraintMapping(constraint, paths, "*");
     }
 
     private static Collection<ConstraintMapping> constraintMapping(Constraint constraint,
@@ -68,5 +79,15 @@ public class SecurityHandlerBuilder {
                             return mapping;
                         }
                 ).collect(Collectors.toList());
+    }
+
+    private static Collection<ConstraintMapping> constraintHeadMapping(Constraint constraint,
+                                                                      Collection<String> paths) {
+        return constraintMapping(constraint, paths, "HEAD");
+    }
+
+    private static Collection<ConstraintMapping> constraintOptionsMapping(Constraint constraint,
+                                                                       Collection<String> paths) {
+        return constraintMapping(constraint, paths, "OPTIONS");
     }
 }

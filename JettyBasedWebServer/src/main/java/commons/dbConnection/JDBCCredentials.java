@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class JDBCCredentials {
+public final class JDBCCredentials {
     public static final @NotNull
     JDBCCredentials DEFAULT = new JDBCCredentials(
             "127.0.0.1",
@@ -50,7 +50,7 @@ public class JDBCCredentials {
         return password;
     }
 
-    public Connection getConnection() throws SQLException {
+    public @NotNull Connection getConnection() throws SQLException {
 
         JDBCCredentials CREDS = JDBCCredentials.DEFAULT;
         return DriverManager.getConnection(CREDS.url(), CREDS.login(), CREDS.password());

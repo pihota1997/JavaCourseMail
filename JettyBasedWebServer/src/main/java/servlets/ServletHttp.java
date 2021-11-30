@@ -18,17 +18,16 @@ public final class ServletHttp extends HttpServlet {
     private static final @NotNull JDBCCredentials CREDS = JDBCCredentials.DEFAULT;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 
         resp.setContentType("text/plain");
         try (final PrintWriter out = resp.getWriter()) {
 
             out.println(new ProductDAO(CREDS.getConnection()).all());
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException | IOException e) {
+            resp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR_500);
         }
-
     }
 
     @Override
@@ -47,10 +46,11 @@ public final class ServletHttp extends HttpServlet {
 
             new ProductDAO(CREDS.getConnection())
                     .create(new ProductsRecord(name, manufacture, Integer.parseInt(quantity)));
-            resp.sendError(HttpStatus.OK_200);
+            resp.setStatus(HttpStatus.OK_200);
+            doGet(req, resp);
 
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            resp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR_500);
         }
     }
 }

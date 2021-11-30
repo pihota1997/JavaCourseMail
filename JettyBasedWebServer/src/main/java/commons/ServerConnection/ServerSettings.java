@@ -17,15 +17,15 @@ public final class ServerSettings {
 
     public static void connect(Server server) throws IOException {
 
-        server.setHandler(contextCollection(server));
+        server.setHandler(contextCollection());
 
     }
 
-    private static HandlerCollection contextCollection(Server server) throws IOException {
+    private static HandlerCollection contextCollection() throws IOException {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.setContextPath("/db");
         context.addServlet(new ServletHolder("dbConnection", new ServletHttp()), "/db");
-        Handler login = LoginHandler.connect(server, context);
+        Handler login = LoginHandler.connect(context);
 
         ContextHandler contextInfo = new ContextHandler();
         contextInfo.setContextPath("/info");
