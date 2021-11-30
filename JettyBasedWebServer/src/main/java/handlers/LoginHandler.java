@@ -5,7 +5,7 @@ import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.JDBCLoginService;
 import org.eclipse.jetty.server.Handler;
 
-public class LoginHandler {
+public final class LoginHandler {
 
     public static ConstraintSecurityHandler connect(Handler context){
 

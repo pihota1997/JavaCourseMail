@@ -1,8 +1,7 @@
 package servlets;
 
-import DAO.ProductDAO;
+import DAO.ProductManager;
 import commons.dbConnection.JDBCCredentials;
-import generated.tables.records.ProductsRecord;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +23,7 @@ public final class ServletHttp extends HttpServlet {
         resp.setContentType("text/plain");
         try (final PrintWriter out = resp.getWriter()) {
 
-            out.println(new ProductDAO(CREDS.getConnection()).all());
+            out.println(ProductManager.createProductDao().all());
 
         } catch (SQLException | IOException e) {
             resp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR_500);
@@ -35,18 +34,18 @@ public final class ServletHttp extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 
         final String name = req.getParameter("name");
-        final String manufacture = req.getParameter("manufacturer");
+        final String manufacturer = req.getParameter("manufacturer");
         final String quantity = req.getParameter("quantity");
 
-        if (name == null || manufacture == null || quantity == null) {
+        if (name == null || manufacturer == null || quantity == null) {
             resp.setStatus(HttpStatus.BAD_REQUEST_400);
             return;
         }
 
         try {
 
-            new ProductDAO(CREDS.getConnection())
-                    .create(new ProductsRecord(name, manufacture, Integer.parseInt(quantity)));
+            ProductManager.createProductDao()
+                    .create(ProductManager.createProductsRecord(name, manufacturer, Integer.parseInt(quantity)));
             resp.setStatus(HttpStatus.OK_200);
             doGet(req, resp);
 
