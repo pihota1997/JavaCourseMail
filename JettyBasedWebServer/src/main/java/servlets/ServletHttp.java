@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jooq.exception.DataAccessException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -49,7 +50,7 @@ public final class ServletHttp extends HttpServlet {
             resp.setStatus(HttpStatus.OK_200);
             doGet(req, resp);
 
-        } catch (SQLException e) {
+        } catch (SQLException | DataAccessException e) {
             resp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR_500);
         }
     }
