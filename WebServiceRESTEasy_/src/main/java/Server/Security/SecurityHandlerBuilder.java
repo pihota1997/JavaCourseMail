@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SecurityHandlerBuilder {
+public final class SecurityHandlerBuilder {
     private static final String ROLE_MANAGER = "manager";
     private static final String ROLE_GUEST = "guest";
 
