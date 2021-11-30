@@ -46,10 +46,9 @@ public final class ServletHttp extends HttpServlet {
 
             ProductManager.createProductDao()
                     .create(ProductManager.createProductsRecord(name, manufacturer, Integer.parseInt(quantity)));
-            resp.setStatus(HttpStatus.OK_200);
-            doGet(req, resp);
+            resp.sendRedirect("/db");
 
-        } catch (SQLException | DataAccessException e) {
+        } catch (SQLException | DataAccessException | IOException e) {
             resp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR_500);
         }
     }
