@@ -1,9 +1,7 @@
 package Server;
 
 import DAO.ProductDAO;
-import DAO.ProductPOJO;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import DTO.ProductPOJO;
 import commons.dbConnection.JDBCCredentials;
 import generated.tables.records.ProductsRecord;
 import org.jetbrains.annotations.NotNull;
@@ -15,23 +13,16 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.lang.System.out;
+public final class RequestProcessingMethods {
 
-public final class SecondaryFunction {
-
-    private List<ProductPOJO> getData(Result<ProductsRecord> result) {
+    public List<ProductPOJO> getData(Result<ProductsRecord> result) {
         List<ProductPOJO> pojos = new LinkedList<>();
         for (ProductsRecord productsRecord : result) {
             ProductPOJO productPOJO = new ProductPOJO(productsRecord.getId(),
                     productsRecord.getName(), productsRecord.getManufacturer(), productsRecord.getQuantity());
-            out.println(productPOJO);
             pojos.add(productPOJO);
         }
         return pojos;
-    }
-
-    public String convertToJSON(Result<ProductsRecord> result) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(getData(result));
     }
 
     public static ProductDAO createProductDao() throws SQLException {
@@ -48,12 +39,12 @@ public final class SecondaryFunction {
     }
 
     public ProductsRecord createProductsRecord(@NotNull String name,
-                                                      @NotNull String manufacturer,
-                                                      @NotNull Integer quantity){
+                                               @NotNull String manufacturer,
+                                               @NotNull Integer quantity) {
         return new ProductsRecord(name, manufacturer, quantity);
     }
 
-    public static SecondaryFunction createSecondaryFunction(){
-        return new SecondaryFunction();
+    public static RequestProcessingMethods createSecondaryFunction() {
+        return new RequestProcessingMethods();
     }
 }

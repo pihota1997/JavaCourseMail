@@ -1,3 +1,4 @@
+
 import commons.ServerConnection.DefaultServer;
 import commons.dbConnection.FlywayInitializer;
 import org.eclipse.jetty.server.Server;
@@ -5,7 +6,7 @@ import org.eclipse.jetty.server.Server;
 import Server.HandlersCollection;
 
 public final class Application {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         FlywayInitializer.initDb();
 
@@ -17,6 +18,5 @@ public final class Application {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 }

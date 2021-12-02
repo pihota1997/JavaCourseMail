@@ -1,23 +1,26 @@
 package Server;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import DTO.ProductPOJO;
 import generated.tables.records.ProductsRecord;
+import org.jooq.Result;
 import org.jooq.exception.DataAccessException;
 
+import javax.annotation.Nullable;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.util.List;
 
 @Path("/")
 public final class ResourcesREST {
 
     @GET
     @Produces({"text/html"})
-    public Response root(){
+    public Response root() {
 
         try {
-            return Response.ok(SecondaryFunction.readWelcomePage()).build();
+            return Response.ok(RequestProcessingMethods.readWelcomePage()).build();
         } catch (FileNotFoundException e) {
             return Response.status(500).build();
         }
@@ -25,9 +28,9 @@ public final class ResourcesREST {
 
     @GET
     @Path("/info")
-    public Response info(){
+    public Response info() {
         try {
-            return Response.ok(SecondaryFunction.readInfoPage()).build();
+            return Response.ok(RequestProcessingMethods.readInfoPage()).build();
         } catch (FileNotFoundException e) {
             return Response.status(500).build();
         }
@@ -36,72 +39,80 @@ public final class ResourcesREST {
     @GET
     @Path("/db")
     @Produces({"application/json"})
-    public Response getAll() {
+    public List<ProductPOJO> getAll() {
 
         try {
-            return Response.ok(SecondaryFunction.createSecondaryFunction()
-                    .convertToJSON(SecondaryFunction.createProductDao().all())).build();
-        } catch (JsonProcessingException |SQLException e) {
-            return Response.status(500).build();
+            return new RequestProcessingMethods().getData(RequestProcessingMethods.createProductDao()
+                    .all());
+
+        } catch (SQLException e) {
+            throw new ServerErrorException(500);
         }
     }
 
     @GET
     @Path("/db/select")
     @Produces({"application/json"})
-    public Response getManufacturerProducts(@QueryParam("manufacturer") String manufacturer) {
+    public List<ProductPOJO> getManufacturerProducts(@QueryParam("manufacturer") @Nullable String manufacturer) {
 
         try {
-            String json = SecondaryFunction.createSecondaryFunction().convertToJSON(SecondaryFunction.createProductDao()
-                    .getManufacturerProducts(manufacturer));
+            if (manufacturer == null)
+                throw new BadRequestException();
 
-            if(json.length() < 3)
-                return Response.status(404).build();
+            Result<ProductsRecord> result = RequestProcessingMethods.createProductDao()
+                    .getManufacturerProducts(manufacturer);
 
-            return Response.ok(json).build();
+            if (result.isEmpty())
+                throw new NotFoundException();
 
-        } catch (SQLException | JsonProcessingException e) {
-            return Response.status(500).build();
+            return new RequestProcessingMethods().getData(result);
+
+        } catch (SQLException e) {
+            throw new ServerErrorException(500);
         }
     }
 
     @POST
     @Path("/db/create")
-    public Response addToDB(@FormParam("name") String name,
-                            @FormParam("manufacturer") String manufacturer,
-                            @FormParam("quantity") int quantity){
+    public Response addToDB(@FormParam("name") @Nullable String name,
+                            @FormParam("manufacturer") @Nullable String manufacturer,
+                            @FormParam("quantity") int quantity) {
 
         if (name == null || manufacturer == null) {
-            return Response.status(400).build();
+            return Response.status(400).entity("This").build();
         }
 
         try {
-            SecondaryFunction.createProductDao()
-                    .create(SecondaryFunction.createSecondaryFunction()
+            RequestProcessingMethods.createProductDao()
+                    .create(RequestProcessingMethods.createSecondaryFunction()
                             .createProductsRecord(name, manufacturer, quantity));
             return Response.ok("Product added successfully").build();
         } catch (DataAccessException e) {
             return Response.status(500).entity("Product with this name exists in the database")
                     .build();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             return Response.status(500).build();
         }
     }
 
     @POST
     @Path("/db/delete")
-    public Response delete(@FormParam("name") String name){
+    public Response delete(@FormParam("name") @Nullable String name) {
 
         try {
-            ProductsRecord productsRecord = SecondaryFunction.createProductDao().get(name);
-            if (productsRecord.size() > 0){
-                SecondaryFunction.createProductDao().delete(name);
-                return Response.ok("Product deleted successfully").build();
+            if (name == null) {
+                return Response.status(400).build();
             }
-            return Response.status(404).build();
-        } catch (NullPointerException e) {
-            return Response.status(404).build();
-        } catch (SQLException e){
+
+            @Nullable ProductsRecord productsRecord = RequestProcessingMethods.createProductDao().get(name);
+            if (productsRecord == null) {
+                return Response.status(404).build();
+            }
+
+            RequestProcessingMethods.createProductDao().delete(name);
+            return Response.ok("Product deleted successfully").build();
+
+        } catch (SQLException e) {
             return Response.status(500).build();
         }
     }

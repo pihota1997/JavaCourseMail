@@ -2,6 +2,7 @@ package DAO;
 
 import generated.tables.records.ProductsRecord;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 
@@ -31,7 +32,7 @@ public final class ProductDAO {
                 .execute();
     }
 
-    public ProductsRecord get(String name){
+    public @Nullable ProductsRecord get(@Nullable String name) {
         return context
                 .select()
                 .from(PRODUCTS)
@@ -39,7 +40,7 @@ public final class ProductDAO {
                 .fetchOneInto(PRODUCTS);
     }
 
-    public @NotNull Result<ProductsRecord> getManufacturerProducts(String manufacturer) {
+    public @NotNull Result<ProductsRecord> getManufacturerProducts(@Nullable String manufacturer) {
         return context
                 .select()
                 .from(PRODUCTS)
@@ -47,7 +48,7 @@ public final class ProductDAO {
                 .fetchInto(PRODUCTS);
     }
 
-    public void delete(@NotNull String name) {
+    public void delete(@Nullable String name) {
         context
                 .delete(PRODUCTS)
                 .where(PRODUCTS.NAME.eq(name))
