@@ -1,9 +1,7 @@
 package Common;
 
-import io.vertx.core.AbstractVerticle;
 
-
-public final class Clan extends AbstractVerticle {
+public final class Clan{
 
     private String name;
 

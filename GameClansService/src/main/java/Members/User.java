@@ -30,20 +30,14 @@ public final class User extends AbstractVerticle {
 
     public void join() {
 
-        final String[] clanName = new String[1];
+        vertx.setPeriodic(5000, timer -> {
 
-        vertx.setPeriodic(3000, timer -> {
+            String clanName = selectClan();
 
-            clanName[0] = selectClan();
-
-            if (clanName[0] == null)
-                return;
-
-
-            vertx.eventBus().request(clanName[0], getName(), reply -> {
+            vertx.eventBus().request(clanName, getName(), reply -> {
 
                 if (reply.succeeded()) {
-                    sendMessageToSomeUser(clanName[0]);
+                    sendMessageToSomeUser(clanName);
                     vertx.cancelTimer(timer);
                     System.out.println(getName() + " has joined the clan");
                 }
@@ -55,16 +49,13 @@ public final class User extends AbstractVerticle {
 
         String clanName;
 
-        var clans = vertx.sharedData().getAsyncMap("Clans").result();
+        var clans = vertx.sharedData().getLocalMap("Clans");
 
         ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        try {
-            clanName = String.valueOf(clans.get(random.nextLong(
-                    vertx.sharedData().getCounter("clan.number").result().get().result() + 1)).result());
-        } catch (NullPointerException e) {
-            return null;
-        }
+        clanName = String.valueOf(clans.get(random.nextLong(
+                vertx.sharedData().getCounter("clan.number").result().get().result() + 1)));
+
 
         return clanName;
     }
@@ -72,7 +63,7 @@ public final class User extends AbstractVerticle {
     public void sendMessageToSomeUser(String clanName) {
         vertx.setPeriodic(5000, timer -> {
 
-            var users = vertx.sharedData().getAsyncMap("usersInClan" + clanName).result();
+            var users = vertx.sharedData().getLocalMap("usersInClan" + clanName);
 
             ThreadLocalRandom random = ThreadLocalRandom.current();
 

@@ -34,8 +34,8 @@ public final class Admin extends AbstractVerticle {
 
         vertx.sharedData().getCounter("clan.number", counter ->
                 counter.result().incrementAndGet(number ->
-                        vertx.sharedData().getAsyncMap("Clans", map ->
-                                map.result().put(number.result(), getClan().getName()))));
+                    vertx.sharedData().getLocalMap("Clans").put(number.result(), getClan().getName())));
+
     }
 
 
@@ -49,16 +49,11 @@ public final class Admin extends AbstractVerticle {
 
     private void controlLimit() {
         vertx.setPeriodic(5000, timer -> {
-            if (vertx.sharedData().getAsyncMap("usersInClan" + getClan().getName()).result().size().result() != null &&
-                    vertx.sharedData().getAsyncMap("moderatorsInClan" + getClan().getName()).result().size().result() != null) {
 
-                if (vertx.sharedData().getAsyncMap("usersInClan" + getClan().getName()).result().size().result()
-                        > getClan().getUsersLimit()
-                        || vertx.sharedData().getAsyncMap("moderatorsInClan" + getClan().getName()).result().size().result()
-                        > getClan().getModeratorsLimit()) {
-                    vertx.eventBus().publish("limit.exceeded", "Please log out and then apply to join the clan again");
-                }
-            }
+            if(vertx.sharedData().getLocalMap("usersInClan" + getClan().getName()).size() > getClan().getUsersLimit() ||
+            vertx.sharedData().getLocalMap("moderatorInClan" + getClan().getName()).size() > getClan().getModeratorsLimit())
+                vertx.eventBus().publish("limit.exceeded", "Please log out and then apply to join the clan again");
+
         });
     }
 }
